@@ -5,6 +5,7 @@ from flask import Flask, request, jsonify, send_file, Response
 from flask_api import status
 
 from Embedding import Embedding
+from domain import Status
 from storage import HDF5ImageStorage
 
 app = Flask(__name__)
@@ -60,7 +61,7 @@ def create_app():
         except Exception as e:
             return jsonify({'error': str(e)}), status.HTTP_500_INTERNAL_SERVER_ERROR
 
-    @app.route('/count/<string:job_id>', methods=['GET'])
+    @app.route('/counts/<string:job_id>', methods=['GET'])
     def get_job_status(job_id):
         try:
             job = embedding.get_job_by_uuid(job_id)
@@ -80,11 +81,13 @@ def create_app():
         except Exception as e:
             return jsonify({'error': str(e)}), status.HTTP_500_INTERNAL_SERVER_ERROR
 
-    @app.route('/count/<string:job_id>/image/download', methods=['GET'])
+    @app.route('/counts/<string:job_id>/image/download', methods=['GET'])
     def get_segmented_image(job_id):
         try:
             job = embedding.get_job_by_uuid(job_id)
-            return _send_image(job.image)
+            if job.status == Status.COMPLETED:
+                return _send_image(job.image)
+            return jsonify({'error': 'Job not completed'}), status.HTTP_404_NOT_FOUND
         except ValueError:
             return jsonify({'error': 'Image not found'}), status.HTTP_404_NOT_FOUND
         except Exception as e:
