@@ -1,8 +1,11 @@
 import dataclasses
-from typing import Union
+from typing import Union, Dict
 from uuid import UUID, uuid4
 
+from flask import jsonify
+
 from . import Status, Image, ProcessedImage
+
 
 def snake_to_camel(input: str) -> str:
     # Can swap out with more sophisticated implementation if needed
@@ -11,6 +14,7 @@ def snake_to_camel(input: str) -> str:
         return camel_cased[0].lower() + camel_cased[1:]
     else:
         return camel_cased
+
 
 @dataclasses.dataclass
 class Job(object):
@@ -42,3 +46,11 @@ class Job(object):
     def set_image(self, image: Image):
         self._image = image
 
+    def to_dict(self) -> dict[str, str]:
+        result = {'uuid': str(self._uuid),
+                'status': str(self._status)}
+        if self._cause:
+            result['cause'] = self._cause
+        if self._status == Status.COMPLETED:
+            result['image'] = str(self._image.uuid)
+        return result

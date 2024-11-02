@@ -66,18 +66,14 @@ def create_app():
         try:
             job = embedding.get_job_by_uuid(job_id)
 
-            return jsonify({'uuid': str(job.uuid),
-                            'status': str(job.status),
-                            'cause': job.cause if job.cause is not None else ''})
+            return jsonify(job.to_dict())
         except ValueError:
             return jsonify({'error': 'Job not found'}), status.HTTP_404_NOT_FOUND
 
     @app.route('/counts', methods=['GET'])
     def get_job_list():
         try:
-            return jsonify([{'uuid': str(job.uuid),
-                             'status': str(job.status),
-                             'cause': job.cause if job.cause is not None else ''} for job in embedding.get_jobs()])
+            return jsonify([job.to_dict() for job in embedding.get_jobs()])
         except Exception as e:
             return jsonify({'error': str(e)}), status.HTTP_500_INTERNAL_SERVER_ERROR
 
