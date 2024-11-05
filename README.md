@@ -27,7 +27,7 @@ POST http://host/images/upload
 ```
 To count bacillus on image by uuid.
 ```http
-GET http://host/images/{image_uuid}/count
+POST http://host/images/{image_uuid}/count
 ```
 ```
 202 ACCEPTED
