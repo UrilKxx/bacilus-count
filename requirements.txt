@@ -9,3 +9,4 @@ h5py==3.12.1
 pillow==11.0.0
 buku @ git+https://github.com/jarun/buku@48bf29e0f03b754c5d2810a101911e02708b277f
 Werkzeug==2.3.8
+Flask-Cors==5.0.0
