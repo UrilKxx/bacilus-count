@@ -1,0 +1,11 @@
+Flask==2.2.5
+Flask-Admin==1.6.1
+Flask-API==3.1
+flask-paginate==2024.4.12
+Flask-WTF==1.2.2
+numpy==2.1.2
+opencv-python==4.10.0.84
+h5py==3.12.1
+pillow==11.0.0
+buku @ git+https://github.com/jarun/buku@48bf29e0f03b754c5d2810a101911e02708b277f
+Werkzeug==2.3.8
